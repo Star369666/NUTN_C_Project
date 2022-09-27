@@ -1,0 +1,109 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int find_min(char [5][4], int, int);
+int find_min_pointer(char*, int, int);
+void string_sort(char [5][4]);
+void string_sort_pointer(char* [5]);
+
+int main(void) 
+{
+	int i;
+	char a[5][4] = { "abc", "azd", "aeq", "qa", "po" };
+	char* copy[5];
+
+	for (i = 0; i < 5; ++i)
+	{
+		copy[i] = a[i];
+	}
+
+	//string_sort(a);
+	string_sort_pointer(copy);
+	
+	for (i = 0; i < 5; ++i) 
+	{
+		printf("%-4s %10c %-10s\n", a[i], ' ', copy[i]);
+	}
+
+	/*for (i = 0; i < 5; i++)
+	{
+		printf("%s\n", a[i]);
+	}*/
+	system("Pause");
+	return 0;
+}
+
+int find_min(char a[5][4], int start, int end) 
+{
+	int i, index_min = start;
+	char check[80];
+
+	strcpy(check,a[start]);
+
+	for (i = start; i < end; i++) 
+	{
+		if (strcmp(a[i], check) < 0) 
+		{
+			strcpy(check, a[i]);
+			index_min = i;
+		}
+		//printf("\ni=%d, %s\n", i, a[index_min]);
+	}
+	return(index_min);
+}
+void string_sort(char a[5][4]) 
+{
+	int start = 0, end = 5, index_min;
+	char change[80];
+	
+	for (start; start < end - 1; start++) 
+	{
+		index_min = find_min(a, start, end);
+
+		if (start != index_min) 
+		{
+			strcpy(change, a[index_min]);
+			strcpy(a[index_min], a[start]);
+			strcpy(a[start], change);
+		}
+		//printf("%s  %s  %s  %s  %s\n", a[0], a[1], a[2], a[3], a[4]);
+	}
+	//printf("\n\n");
+}
+
+int find_min_pointer(char* copy[5], int start, int end) 
+{
+	int i, index_min = start;
+	char *change;
+
+	change = copy[start];
+
+	for(i = start + 1; i < end; ++i)
+	{
+		if (strcmp(copy[i], change) < 0) 
+		{
+			change = copy[i];
+			index_min = i;
+		}
+	}
+	return(index_min);
+}
+
+void string_sort_pointer(char* copy[5]) 
+{
+	int start = 0, end = 5;
+	char *change;
+
+	for (start; start < end - 1; ++start) 
+	{
+		int index_min = find_min_pointer(copy, start, end);
+		if (index_min != start) 
+		{
+			change = copy[index_min];
+			copy[index_min] = copy[start];
+			copy[start] = change;
+		}
+	}
+}
